@@ -1,0 +1,19 @@
+{
+  "name": "http-request-decorator",
+  "version": "0.0.1",
+  "description": "http request decorator",
+  "main": "index.js",
+  "repository": "git@github.com:dafeng0x00/http-request-decorator.git",
+  "author": "大风 <7972918+dafeng1@user.noreply.gitee.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -watch"
+  },
+  "devDependencies": {
+    "typescript": "^4.0.3"
+  },
+  "peerDependencies": {
+    "axios": "^0.20.0",
+    "qs": "^6.9.4"
+  }
+}
