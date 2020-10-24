@@ -1,23 +1,24 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "outDir": "dist",
+    "outDir": "lib",
     "sourceMap": false,
     "target": "esnext",
-    "module": "esnext",
+    "module": "es2015",
     "moduleResolution": "node",
     "allowJs": false,
     "strict": true,
     "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "experimentalDecorators": true,
+    "suppressImplicitAnyIndexErrors": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "removeComments": false,
     "jsx": "preserve",
-    "lib": ["esnext", "dom"],
-    "rootDir": "."
+    "lib": ["es2015", "dom"]
   },
   "include": [
-    "src"
+    "src/**/*.ts"
   ]
 }

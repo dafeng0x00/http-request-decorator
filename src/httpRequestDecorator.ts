@@ -1,4 +1,4 @@
-import qs from 'qs'
+//import qs from 'qs'
 //import axios from 'axios'
 
 export enum Method {

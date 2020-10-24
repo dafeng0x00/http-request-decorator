@@ -2,15 +2,37 @@
   "name": "http-request-decorator",
   "version": "0.0.1",
   "description": "http request decorator",
-  "main": "index.js",
-  "repository": "git@github.com:dafeng0x00/http-request-decorator.git",
-  "author": "大风 <7972918+dafeng1@user.noreply.gitee.com>",
+  "main": "dist/http-request-decorator.common.js",
+  "module": "dist/http-request-decorator.esm.js",
+  "unpkg": "dist/http-request-decorator.js",
+  "typings": "lib/index.d.ts",
+  "author": "ezfe (1236192@qq.com)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dafeng0x00/http-request-decorator.git"
+  },
   "license": "MIT",
   "scripts": {
-    "build": "tsc -watch"
+    "build": "yarn build:ts & yarn build:main",
+    "build:ts": "tsc -p .",
+    "build:main": "node build.js"
   },
   "devDependencies": {
-    "typescript": "^4.0.3"
+    "@babel/core": "^7.12.3",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-decorators": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "axios": "^0.21.0",
+    "babel-loader": "^8.1.0",
+    "qs": "^6.9.4",
+    "rollup": "^2.32.1",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-replace": "^2.2.0",
+    "ts-loader": "^8.0.6",
+    "typescript": "^4.0.3",
+    "uglify-es": "^3.3.9",
+    "webpack": "^5.2.0",
+    "webpack-cli": "^4.1.0"
   },
   "peerDependencies": {
     "axios": "^0.20.0",
