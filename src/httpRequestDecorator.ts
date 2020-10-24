@@ -16,11 +16,11 @@ export enum DataType {
 }
 
 export interface RequestOptions {
-  method: Method,
   url: string | RequestOptions,
+  method?: Method,
   dataType?: DataType,
   headers?: object,
-  responseProcessor: () => boolean,
+  responseProcessor?: () => boolean,
   params?: any,
   data?: any
 }
@@ -41,10 +41,10 @@ function optionsBuilder (method:Method, requestOptions: RequestOptions | string,
   return options
 }
 
-function HttpRequestDecorator (options: RequestOptions): (target: any, name: any, decorator: any) => void {
+function HttpRequestDecorator (options: RequestOptions): (target: any, name: any) => void {
   console.log (options, 1)
-  return (target:any, name:any, decorator:any ) => {
-    console.log (target, name, decorator)
+  return (target:any, name:any) => {
+    console.log (target, name)
   }
 }
 

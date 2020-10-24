@@ -1,9 +1,7 @@
 import {Get} from './httpRequestDecorator'
 
 class Test {
-
-  @Get("aaa")
+  @Get ({url: 'aaa'})
   testFunc () {
   }
-
 }
