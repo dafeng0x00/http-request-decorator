@@ -63,3 +63,5 @@ export function Put (options: RequestOptions | string, dataType?: DataType, head
 export function Delete (options: RequestOptions | string, dataType?: DataType, headers?: object) {
   return HttpRequestDecorator (optionsBuilder (Method.delete, options, dataType, headers))
 }
+
+export default HttpRequestDecorator
