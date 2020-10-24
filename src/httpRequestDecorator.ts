@@ -42,9 +42,8 @@ function optionsBuilder (method:Method, requestOptions: RequestOptions | string,
 }
 
 function HttpRequestDecorator (options: RequestOptions): (target: any, name: any) => void {
-  console.log (options, 1)
   return (target:any, name:any) => {
-    console.log (target, name)
+    console.log (target, name, options)
   }
 }
 
