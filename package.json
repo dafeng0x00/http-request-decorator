@@ -5,7 +5,6 @@
   "main": "dist/http-request-decorator.common.js",
   "module": "dist/http-request-decorator.esm.js",
   "unpkg": "dist/http-request-decorator.js",
-  "typings": "lib/index.d.ts",
   "author": "ezfe (1236192@qq.com)",
   "repository": {
     "type": "git",
@@ -39,5 +38,8 @@
   "peerDependencies": {
     "axios": "^0.20.0",
     "qs": "^6.9.4"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
