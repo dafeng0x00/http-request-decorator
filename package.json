@@ -1,5 +1,5 @@
 {
-  "name": "http-request-decorator",
+  "name": "@ezfe/http-request-decorator",
   "version": "0.0.1",
   "description": "http request decorator",
   "main": "dist/http-request-decorator.common.js",
