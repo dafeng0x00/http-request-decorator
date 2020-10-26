@@ -31,8 +31,7 @@ function optionsBuilder (method:Method, requestOptions: RequestOptions | string,
     method,
     url: '',
     dataType,
-    headers,
-    responseHandler: () => true
+    headers
   }
 
   if (typeof requestOptions === 'object') {
@@ -91,15 +90,18 @@ function HttpRequestDecorator (options: RequestOptions): (target: any, name: str
               reject,
               response,
               data: response.data,
-              responseData: response.data
+              responseData: response.data,
+              requestParam
             }
 
-            if (typeof options.responseHandler === 'function' &&
-                options.responseHandler (params.data) === false ) {
-                reject (params.data)
+            const responseHandler = options.responseHandler || target['responseHandler']
+            if (typeof responseHandler === 'function' &&
+                responseHandler.call (target, {responseData: params.data, requestParam}) === false) {
+              reject (params.data)
             }
 
             const result = handler.call (target, params)
+
             if (typeof result !== 'undefined') {
               resolve (result)
             }
