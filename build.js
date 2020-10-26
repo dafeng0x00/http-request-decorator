@@ -96,7 +96,7 @@ function genConfig (opts) {
       file: opts.file,
       format: opts.format,
       banner,
-      name: 'VueClassComponent',
+      name: 'HttpRequestDecorator',
       exports: 'named',
       globals: {
         axios: 'axios',

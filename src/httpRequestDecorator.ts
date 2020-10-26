@@ -1,5 +1,5 @@
-//import qs from 'qs'
-//import axios from 'axios'
+import qs from 'qs'
+import axios from 'axios'
 
 export enum Method {
   get = 'get',
@@ -12,15 +12,16 @@ export enum DataType {
   formData = 'form-data',
   formUrlEncode = 'x-www-form-urlencoded',
   raw = 'raw',
-  binary = 'binary'
+  binary = 'binary',
+  json = 'josn'
 }
 
 export interface RequestOptions {
-  url: string | RequestOptions,
+  url: string,
   method?: Method,
   dataType?: DataType,
   headers?: object,
-  responseProcessor?: () => boolean,
+  responseHandler ?: (responseData: any) => boolean,
   params?: any,
   data?: any
 }
@@ -28,22 +29,84 @@ export interface RequestOptions {
 function optionsBuilder (method:Method, requestOptions: RequestOptions | string, dataType?:DataType, headers?: object): RequestOptions {
   let options: RequestOptions = {
     method,
-    url: requestOptions,
+    url: '',
     dataType,
     headers,
-    responseProcessor: () => true
+    responseHandler: () => true
   }
 
   if (typeof requestOptions === 'object') {
     options = (<any>Object).assign ({}, options, requestOptions)
+  } else if (typeof requestOptions === 'string') {
+    options.url = requestOptions
+  }
+
+  if (typeof options.url !== 'string' || options.url.trim () == '') {
+    throw new Error ('invalid url')
+  }
+
+  if (!method) {
+    options.method = Method.get
+  }
+
+  if (!dataType) {
+    options.dataType = DataType.formData
   }
 
   return options
 }
 
-function HttpRequestDecorator (options: RequestOptions): (target: any, name: any) => void {
-  return (target:any, name:any) => {
-    console.log (target, name, options)
+function requestParamBuilder (options: RequestOptions, requestParam: any): RequestOptions {
+  if (typeof requestParam !== 'undefined' && typeof requestParam !== 'object') {
+    throw new Error ('request param must be object')
+  }
+
+  if (options.method == Method.get) {
+    options.params = {
+      ...requestParam
+    }
+  } else if (options.method == Method.post || options.method == Method.put  ||
+    options.method == Method.delete) {
+    if (options.dataType === DataType.formData) {
+      options.data = qs.stringify (requestParam)
+    }
+
+    if (options.dataType === DataType.json) {
+      options.data = {...requestParam}
+    }
+  }
+
+  return options
+}
+
+function HttpRequestDecorator (options: RequestOptions): (target: any, name: string, decorator: any) => void {
+  return (target: any, name: string, decorator: any) => {
+    const handler = decorator.value
+    decorator.value = (requestParam: any) => {
+      return new Promise ((resolve, reject) => {
+        axios.request (requestParamBuilder (options, requestParam))
+          .then (response => {
+            const params = {
+              resolve,
+              reject,
+              response,
+              data: response.data,
+              responseData: response.data
+            }
+
+            if (typeof options.responseHandler === 'function' &&
+                options.responseHandler (params.data) === false ) {
+                reject (params.data)
+            }
+
+            const result = handler.call (target, params)
+            if (typeof result !== 'undefined') {
+              resolve (result)
+            }
+          })
+          .catch (reject)
+      })
+    }
   }
 }
 
