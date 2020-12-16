@@ -13,7 +13,8 @@ export enum DataType {
   formUrlEncode = 'x-www-form-urlencoded',
   raw = 'raw',
   binary = 'binary',
-  json = 'josn'
+  json = 'json',
+  path = 'path'
 }
 
 export interface RequestOptions {
@@ -48,7 +49,7 @@ function optionsBuilder (method:Method, requestOptions: RequestOptions | string,
     options.method = Method.get
   }
 
-  if (!dataType) {
+  if (!dataType && !options.dataType) {
     options.dataType = DataType.formData
   }
 
@@ -57,12 +58,17 @@ function optionsBuilder (method:Method, requestOptions: RequestOptions | string,
 
 function requestParamBuilder (options: RequestOptions, requestParam: any): RequestOptions {
   if (typeof requestParam !== 'undefined' && typeof requestParam !== 'object') {
-    throw new Error ('request param must be object')
+    throw new Error ('request params must be object')
   }
 
   if (options.method == Method.get) {
-    options.params = {
-      ...requestParam
+    if (options.dataType === DataType.path && Array.isArray (requestParam)) {
+      const extraPath = requestParam.join ('/')
+      options.url = options.url + (options.url.substr (options.url.length - 1, 1) != "/" ? "/" : "") + extraPath
+    } else {
+      options.params = {
+        ...requestParam
+      }
     }
   } else if (options.method == Method.post || options.method == Method.put  ||
     options.method == Method.delete) {
