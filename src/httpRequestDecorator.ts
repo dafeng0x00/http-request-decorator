@@ -64,6 +64,8 @@ function requestParamBuilder (options: RequestOptions, requestParam: any): Reque
   if (options.method == Method.get) {
     if (options.dataType === DataType.path && Array.isArray (requestParam)) {
       const extraPath = requestParam.join ('/')
+      //#BUG 会修改options.url的值
+      //#TODO
       options.url = options.url + (options.url.substr (options.url.length - 1, 1) != "/" ? "/" : "") + extraPath
     } else {
       options.params = {
@@ -103,7 +105,7 @@ function HttpRequestDecorator (options: RequestOptions): (target: any, name: str
             const responseHandler = options.responseHandler || target['responseHandler']
             if (typeof responseHandler === 'function' &&
                 responseHandler.call (target, {responseData: params.data, requestParam}) === false) {
-              reject (params.data)
+              return reject (params.data)
             }
 
             const result = handler.call (target, params)
