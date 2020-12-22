@@ -24,7 +24,8 @@ export interface RequestOptions {
   headers?: object,
   responseHandler ?: (responseData: any) => boolean,
   params?: any,
-  data?: any
+  data?: any,
+  baseUrl?: string
 }
 
 function optionsBuilder (method:Method, requestOptions: RequestOptions | string, dataType?:DataType, headers?: object): RequestOptions {
@@ -63,10 +64,11 @@ function requestParamBuilder (options: RequestOptions, requestParam: any): Reque
 
   if (options.method == Method.get) {
     if (options.dataType === DataType.path && Array.isArray (requestParam)) {
+      if (!options.baseUrl) {
+        options.baseUrl = options.url
+      }
       const extraPath = requestParam.join ('/')
-      //#BUG 会修改options.url的值
-      //#TODO
-      options.url = options.url + (options.url.substr (options.url.length - 1, 1) != "/" ? "/" : "") + extraPath
+      options.url = options.baseUrl + (options.baseUrl.substr (options.baseUrl.length - 1, 1) != "/" ? "/" : "") + extraPath
     } else {
       options.params = {
         ...requestParam
@@ -83,7 +85,7 @@ function requestParamBuilder (options: RequestOptions, requestParam: any): Reque
     }
   }
 
-  return options
+  return {...options}
 }
 
 function HttpRequestDecorator (options: RequestOptions): (target: any, name: string, decorator: any) => void {

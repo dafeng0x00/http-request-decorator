@@ -1,6 +1,6 @@
 {
   "name": "@ezfe/http-request-decorator",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "http request decorator",
   "main": "dist/http-request-decorator.common.js",
   "module": "dist/http-request-decorator.esm.js",
